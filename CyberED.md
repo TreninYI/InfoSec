@@ -179,8 +179,9 @@ swaks --to mike@sandbox.local --from administrator@sandbox.local --header "Subje
 
 После запуска машины, чтобы она инициализировала сеть, необходимо войти в нее под специальным аккаунтом: 
 
-`Логин: Trevis
-Пароль: Qwerty123`
+`Логин: Trevis`
+
+`Пароль: Qwerty123`
 
 Решение:
 
